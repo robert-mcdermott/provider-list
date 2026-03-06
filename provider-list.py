@@ -221,9 +221,10 @@ You are extracting information from a Fred Hutchinson Cancer Center provider pro
   "Credentials": "Professional credentials after name (MD, PhD, MPH, etc.)",
   "Titles": "Professional titles and positions",
   "Specialty": "Medical specialty/specialties",
-  "Locations": "Practice locations and clinics", 
+  "Locations": "Practice locations and clinics",
   "Areas of Clinical Practice": "Clinical practice areas and focus - look under 'Provider Background' section",
   "Diseases Treated": "All diseases and conditions treated - look for 'Diseases Treated' section with specific disease names",
+  "Research Interests": "Research interests, research focus areas, active research programs, laboratory research, clinical research interests, or publications focus - look in 'Provider Background', 'Research', or 'About' sections",
   "Languages": "Languages spoken",
   "Undergraduate Degree": "Undergraduate education and institution",
   "Medical Degree": "Medical school and degree",
@@ -231,20 +232,21 @@ You are extracting information from a Fred Hutchinson Cancer Center provider pro
   "Fellowship": "Fellowship training and specialization",
   "Board Certifications": "Medical board certifications with dates if available",
   "Awards": "Awards, honors, recognition, and achievements",
-  "Other": "Other relevant information like MPH, internships, additional training, research experience"
+  "Other": "Other relevant information like MPH, internships, additional training not captured elsewhere"
 }}
 
 CRITICAL INSTRUCTIONS:
 1. EXTRACT ALL FIELDS - Search the ENTIRE content thoroughly
 2. For "Areas of Clinical Practice" - Look specifically for the "Provider Background" section, then find "Area of Clinical Practice" subsection
 3. For "Diseases Treated" - Look for the "Diseases Treated" section which lists specific diseases/conditions in a structured format
-4. For "Credentials" - Extract degree abbreviations that appear after the provider name (MD, MPH, PhD, etc.)
-5. For "Awards" - look for any recognition, top doctor awards, honors mentioned
-6. For "Other" - include MPH details, post-doctoral fellowships, research experience, internships
-7. Look in "Education, Experience and Certifications" section for degrees/training
-8. Pay special attention to section headings like "Provider Background", "Diseases Treated", "Area of Clinical Practice"
-9. Return ONLY valid JSON - no extra text or explanation
-10. Use empty string "" ONLY if information truly cannot be found after thorough search
+4. For "Research Interests" - Look for any mention of research focus, research interests, laboratory work, clinical research, or research programs; this may appear under "Provider Background", "Research Interests", "Research Focus", or as a narrative description of research activities
+5. For "Credentials" - Extract degree abbreviations that appear after the provider name (MD, MPH, PhD, etc.)
+6. For "Awards" - look for any recognition, top doctor awards, honors mentioned
+7. For "Other" - include MPH details, post-doctoral fellowships, additional training not captured in other fields; do NOT put research information here if it belongs in "Research Interests"
+8. Look in "Education, Experience and Certifications" section for degrees/training
+9. Pay special attention to section headings like "Provider Background", "Diseases Treated", "Area of Clinical Practice", "Research"
+10. Return ONLY valid JSON - no extra text or explanation
+11. Use empty string "" ONLY if information truly cannot be found after thorough search
 
 Provider profile content:
 {focused_content}
@@ -305,12 +307,12 @@ def write_csv_header(output_file):
     """Write CSV header row."""
     fieldnames = [
         "Name", "Credentials", "Titles", "Specialty", "Locations",
-        "Areas of Clinical Practice", "Diseases Treated", "Languages",
-        "Undergraduate Degree", "Medical Degree", "Residency", "Fellowship",
+        "Areas of Clinical Practice", "Diseases Treated", "Research Interests",
+        "Languages", "Undergraduate Degree", "Medical Degree", "Residency", "Fellowship",
         "Board Certifications", "Awards", "Other", "Profile URL", "Last Modified"
     ]
     
-    with open(output_file, 'w', newline='', encoding='utf-8') as csvfile:
+    with open(output_file, 'w', newline='', encoding='utf-8-sig') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
     

@@ -78,6 +78,7 @@ The utility generates a CSV file with the following columns:
 - Locations
 - Areas of Clinical Practice
 - Diseases Treated
+- Research Interests
 - Languages
 - Undergraduate Degree
 - Medical Degree
